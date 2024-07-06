@@ -1,0 +1,54 @@
+Soham Rajesh Pawar
+CS22BTECH11055
+Lab Exam 2
+
+Question 1)
+
+DELIMITER //
+
+CREATE PROCEDURE isHolds(IN tableName VARCHAR(255), IN attr1 VARCHAR(255), IN attr2 VARCHAR(255))
+BEGIN
+
+    SET @result = 0;
+    
+    SET @query = CONCAT('SELECT COUNT(*) INTO @result FROM ', tableName, ' WHERE EXISTS (SELECT * FROM (SELECT ', attr1, ', COUNT(DISTINCT ', attr2, ') AS cnt FROM ', tableName, ' GROUP BY ', attr1, ') AS T WHERE cnt > 1)');
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    
+    IF @result = 0 THEN
+        SELECT "TRUE" AS Result;
+    ELSE
+        SELECT "FALSE" AS Result;
+    END IF;
+    
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+
+Question 2)
+
+// Creating Backup Table
+
+CREATE TABLE backup(
+    ID varchar(5) PRIMARY KEY,
+    name varchar(20) NOT NULL,
+    dept_name varchar(20),
+    tot_cred decimal(3,0),
+    deleted_on date NOT NULL
+);
+    
+// Creating Trigger for auto backup
+
+DELIMITER /
+
+CREATE TRIGGER back_up
+    BEFORE DELETE ON student 
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO backup VALUES(OLD.ID, OLD.name, OLD.dept_name, OLD.tot_cred, CURDATE());
+    END/
+    
+    -- Adding Foreign Key Constraint
+    ALTER TABLE $tableName$
+    ADD CONSTRAINT $constraintName$ FOREIGN KEY ($columnName$) REFERENCES $referencedTable$($referencedColumn$);

@@ -1,0 +1,110 @@
+Problem Set 1
+Soham Rajesh Pawar
+CS22BTECH11055
+
+
+Question 1)
+a)
+CREATE TABLE Faculty(
+    f_id VARCHAR(20) PRIMARY KEY,
+    f_name VARCHAR(50),
+    salary int,
+    post VARCHAR(90)
+    );
+
+CREATE TABLE Student(
+    s_id VARCHAR(20) PRIMARY KEY,
+    s_name VARCHAR(50),
+    dept_name VARCHAR(50),
+    f_id VARCHAR(20),
+    FOREIGN KEY(f_id) references
+    Faculty(f_id)
+    );
+
+b)
+delimiter //
+create procedure decompose()
+    begin
+    declare done int default false;
+    declare stud_id VARCHAR(20);
+    declare inst_id VARCHAR(20);
+    declare stud_name VARCHAR(50);
+    declare inst_name VARCHAR(50);
+    declare dept VARCHAR(50);
+    declare sal int;
+    declare type VARCHAR(90);
+    declare cur1 CURSOR FOR select f_id, f_name, salary, post from projects;
+    declare cur2 CURSOR FOR select s_id, s_name, dept_name, f_id from student;
+    declare CONTINUE HANDLER FOR NOT FOUND set done = true;
+    read1 : LOOP
+    fetch cur1 into inst_id, inst_name, sal, type;
+    if done == true then LEAVE LOOP; end if;
+    set @present = 0;
+    set @query = CONCAT('select count(*) into @present from Faculty where f_id = ', inst_id);
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    set @query = CONCAT('insert into Faculty values(', inst_id,',', inst_name ,',', sal,',', type,')');
+    PREPARE stmt FROM @query;
+    if @present == 0 then EXECUTE stmt; end if;
+    END LOOP read1;
+    
+    read2 : LOOP
+    fetch cur2 into stud_id, stud_name, dept, inst_id;
+    if done == true then LEAVE LOOP; end if;
+    set @query = CONCAT('insert into Student values(', stud_id,',', stud_name ,',', dept,',', inst_id,')');
+    PREPARE stmt FROM @query;
+    EXECUTE stmt;
+    END LOOP read2;
+    close cur1;
+    close cur2;
+    deallocate prepare stmt;
+    end //
+    delimiter;
+
+
+Question 2)
+
+CREATE TABLE LOG_RECORD (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    operation VARCHAR(255),
+    table_name VARCHAR(255),
+    row_id VARCHAR(255),
+    done_at DATETIME,
+    done_by VARCHAR(255)
+);
+
+trigger for insert
+
+delimiter //
+create trigger insert_log
+    after insert on instructor
+    for each row
+    begin
+    insert into LOG_RECORD(operation, table_name, row_id, done_at, done_by) 
+    values('INSERT', 'instructor', cast(NEW.ID as char), NOW(), USER());
+    end //
+delimiter ;
+
+trigger for delete
+
+delimiter //
+create trigger delete_log
+    before delete on instructor
+    for each row
+    begin
+    insert into LOG_RECORD(operation, table_name, row_id, done_at, done_by) 
+    values('DELETE', 'instructor', cast(OLD.ID as char), NOW(), USER());
+    end //
+delimiter ;
+
+trigger for update
+
+delimiter //
+create trigger update_log
+    after update on instructor
+    for each row
+    begin
+    insert into LOG_RECORD(operation, table_name, row_id, done_at, done_by) 
+    values('UPDATE', 'instructor', cast(OLD.ID as char), NOW(), USER());
+    end //
+delimiter ;
