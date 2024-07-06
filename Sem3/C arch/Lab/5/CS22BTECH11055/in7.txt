@@ -1,0 +1,13 @@
+addi x30, x30, 1
+add x20, x20, x0
+addi x20, x20, 1
+addi sp, sp, -16
+sd x10, 8(sp)
+sd x1, 0(sp)
+addi x10, x10, -1
+ld x10, 8(sp)
+addi x10, x10, -2
+ld x1, 0(sp)
+ld x10, 8(sp)
+addi sp, sp, 16
+addi x10, x0, 11

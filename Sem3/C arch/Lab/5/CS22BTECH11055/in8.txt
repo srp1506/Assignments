@@ -1,0 +1,29 @@
+ld x10, 0(x9)
+ld x11, 8(x9)
+add x10, x10, x11
+ld x11, 16(x9)
+add x10, x10, x11
+ld x11, 24(x9)
+add x10, x10, x11
+ld x11, 32(x9)
+add x10, x10, x11
+ld x11, 40(x9)
+add x10, x10, x11
+ld x11, 48(x9)
+add x10, x10, x11
+ld x11, 56(x9)
+add x10, x10, x11
+ld x11, 64(x9)
+add x10, x10, x11
+ld x11, 72(x9)
+add x10, x10, x11
+ld x11, 80(x9)
+sub x10, x10, x11
+ld x11, 88(x9)
+sub x10, x10, x11
+ld x11, 96(x9)
+sub x10, x10, x11
+ld x11, 104(x9)
+sub x10, x10, x11
+ld x11, 112(x9)
+sub x10, x10, x11

@@ -1,0 +1,4 @@
+ld x3, 0(x7)
+ld x5, 0(x6)
+add x5, x5, x5
+add x3, x3, x3

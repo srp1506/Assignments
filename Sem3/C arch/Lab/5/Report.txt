@@ -1,0 +1,20 @@
+Lab Assignment - 5;
+
+Name - Soham Rajesh Pawar;
+Roll number - CS22BTECH11055;
+Course ID - CS2323;
+Computer Architecture;
+
+General Train of Thought :
+	
+	1) The file is read and the instructions are stored in an array of character pointers. An array of similar length is maintained named nop which stores the number of nops to be inserted before the corresponding instruction;
+	2) For each instruction the successive two instructions are considered as potential candidates where nop needs to be inserted;
+	3) According to conditions taught in class nops are inserted for both parts of the question;
+	4) While printing, the nop array is used to insert nops before the concerned instruction;
+	5) The processing of the instructions is done by Reg_identify function and internal logic built in the Detect_hazard function. To summarise, the registers are identified as source or destination registers based on the type of instruction and then converted to an integer (0 - 31). This is done to ensure that both the real names and ABI names of the registers are recognised;
+	
+Testing :
+	
+	1) Sample data was obtained in part by construction and contribution by fellow classmates;
+	2) Verification of the answer produced was done manually and also using RIPES on w/o forwarding and with forwarding settings for Q1 and Q2 respectively;
+	3) Multiple logical checks were done manually to ensure correctness;
